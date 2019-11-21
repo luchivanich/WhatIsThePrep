@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WitpBusinessLogic
+﻿namespace WitpBusinessLogic
 {
     public interface IExample
     {
         string Sentence { get; set; }
 
-        bool CheckTheAnswer(string answer);
+        string CorrectAnswer { get; set; }
     }
 }
