@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Autofac;
 
 namespace WhatIsThePrep
 {
@@ -6,11 +6,12 @@ namespace WhatIsThePrep
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-
-            // 1. Handle users commands. - look for some existing libraries.
-            // 2. Data base with sentences. - sqlite ? (file db)
-            // 3. Separate business cycle
+            var container = DiContainer.Init();
+            using(var scope = container.BeginLifetimeScope())
+            {
+                var app = scope.Resolve<IApplication>();
+                app.Run();
+            }
         }
     }
 }
