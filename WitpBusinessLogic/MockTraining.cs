@@ -9,7 +9,7 @@ namespace WitpBusinessLogic
             {
                 Sentence = "Some sentence [?] some preposition",
                 CorrectAnswer = "with"
-        };
+            };
         }
     }
 }

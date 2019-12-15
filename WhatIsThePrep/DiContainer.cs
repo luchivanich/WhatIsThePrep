@@ -9,7 +9,8 @@ namespace WhatIsThePrep
         {
             var builder = new ContainerBuilder();
 
-            builder.RegisterType<MockTraining>().As<ITraining>().SingleInstance();
+            builder.RegisterType<FileExampleGenerator>().As<IExampleStorage>().SingleInstance();
+            builder.RegisterType<Training>().As<ITraining>().SingleInstance();
             builder.RegisterType<MainApplication>().As<IApplication>().SingleInstance();
 
             return builder.Build();
