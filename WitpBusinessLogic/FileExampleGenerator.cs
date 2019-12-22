@@ -8,7 +8,10 @@ namespace WitpBusinessLogic
 {
     public class FileExampleGenerator : IExampleStorage
     {
-        private List<string> _sentences;
+        private const int SENTENCE_MAX_LENGTH = 80;
+
+        private List<string> _allSentences = new List<string>();
+        private List<IExample> _exampleSentences = new List<IExample>();
 
         private readonly List<string> _commonPrepositions = new List<string>
         {
@@ -21,45 +24,61 @@ namespace WitpBusinessLogic
 
         public FileExampleGenerator()
         {
-            var text = File.ReadAllText("text.txt");
-            _sentences = Regex.Split(text, @"(?<=[\.!\?])(?<!Mr\.|Mrs\.|Dr\.|Ms\.|St\.|a\.m\.|p\.m\.)\s+").ToList();
+            
         }
 
-        public IExample GetRandomExample()
+        public void Init()
         {
-            var i = 0;
-            while(i < 10)
+            var text = File.ReadAllText("text.txt");
+            _allSentences = Regex.Split(text, @"(?<=[\.!\?])(?<!Mr\.|Mrs\.|Dr\.|Ms\.|St\.|a\.m\.|p\.m\.)\s+").ToList();
+        }
+
+        public IExample GetExample()
+        {
+            while (_allSentences.Count > 0)
             {
-                var rnd = new Random();
-                var index = rnd.Next(0, _sentences.Count - 1);
+                var sentence = _allSentences.First();
+                _allSentences.Remove(sentence);
 
-                (var hasPreposition, var sentence, var correctAnswer) = IsContainPreposition(_sentences[index]);
+                var example = CreateExample(sentence);
+                if (example != null)
+                {
+                    _exampleSentences.Add(example);
+                    return example;
+                }
+            }
 
-                if (hasPreposition)
+            return GetRandomExample();
+        }
+
+        private IExample CreateExample(string sentence)
+        {
+            var stringResult = sentence;
+            foreach (var prep in _commonPrepositions)
+            {
+                if (sentence.Length <= SENTENCE_MAX_LENGTH && sentence.Contains($" {prep} "))
                 {
                     return new Example
                     {
-                        Sentence = sentence,
-                        CorrectAnswer = correctAnswer
+                        Sentence = stringResult.Replace($" {prep} ", " [?] "),
+                        CorrectSentence = sentence,
+                        CorrectAnswer = prep
                     };
                 }
-                i++;
             }
             return null;
         }
 
-        private (bool, string, string) IsContainPreposition(string sentence)
+        private IExample GetRandomExample()
         {
-            var boolResult = false;
-            var stringResult = sentence;
-            foreach(var prep in _commonPrepositions)
+            if (_exampleSentences.Count == 0)
             {
-                if (sentence.Contains($" {prep} "))
-                {
-                    return (true, stringResult.Replace($" {prep} ", " [?] "), prep);
-                }
+                return null;
             }
-            return (false, null, null);
+
+            var rnd = new Random();
+            var index = rnd.Next(0, _exampleSentences.Count - 1);
+            return _exampleSentences[index];
         }
     }
 }

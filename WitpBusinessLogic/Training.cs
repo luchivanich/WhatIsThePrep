@@ -11,7 +11,7 @@
 
         public IExample GetNextExample()
         {
-            return _exampleStorage.GetRandomExample();
+            return _exampleStorage.GetExample();
         }
     }
 }

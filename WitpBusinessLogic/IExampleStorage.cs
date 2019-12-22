@@ -2,6 +2,6 @@
 {
     public interface IExampleStorage
     {
-        IExample GetRandomExample();
+        IExample GetExample();
     }
 }

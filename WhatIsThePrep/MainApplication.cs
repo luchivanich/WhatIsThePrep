@@ -18,6 +18,11 @@ namespace WhatIsThePrep
             while(true)
             {
                 var example = _training.GetNextExample();
+                if (example == null)
+                {
+                    Console.WriteLine("Thank you and goodbye");
+                    return;
+                }
                 Console.WriteLine(example.Sentence);
                 var answer = Console.ReadLine();
                 if (answer.Equals(example.CorrectAnswer, StringComparison.OrdinalIgnoreCase))

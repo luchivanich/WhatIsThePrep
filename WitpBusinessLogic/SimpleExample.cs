@@ -1,6 +1,6 @@
 ﻿namespace WitpBusinessLogic
 {
-    public class SimpleExample : IExample
+    public class SimpleExample
     {
         public string Sentence { get; set; }
         public string CorrectAnswer { get; set; }
