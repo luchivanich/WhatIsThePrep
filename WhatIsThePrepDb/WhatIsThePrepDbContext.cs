@@ -4,11 +4,19 @@ namespace WhatIsThePrepDb
 {
     public class WhatIsThePrepDbContext : DbContext
     {
-        public DbSet<Example> Examples { get; set; }
+        private string connString = "Data Source=witp.db";
+
+        public DbSet<ExampleModel> Examples { get; set; }
+
+        //public WhatIsThePrepDbContext()
+        //{
+        //    Database.EnsureCreated()
+        //    Database.SetInitializer<SchoolDBContext>(new CreateDatabaseIfNotExists<SchoolDBContext>());
+        //}
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=witp.db");
+            optionsBuilder.UseSqlite(connString);
         }
     }
 }

@@ -1,8 +1,9 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WhatIsThePrepDb
 {
-    public class Example
+    [Table("Examples")]
+    public class ExampleModel
     {
         public long Id { get; set; }
         public string Sentence { get; set; }
